@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Add drink recipe(Tätä sivua tullaan käyttämään muokkaamiseen sekä lisäämiseen)</h1>
+
+  <form>
+    <div class="form-group">
+      <label>Drink name</label>
+      <input type="text" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label>Ingredients(ajattelin tähän sellaista dynaamista systeemiä että tulee uusi kenttä kun painaa nappia, jos osaan)</label>
+      <input type="text" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-success">New ingredient</button>
+    
+    <div>
+        <br>
+    </div>
+    
+    <div class="form-group">
+      <label>Type</label>
+      <input type="text" class="form-control">
+    </div>
+    
+    <div class="form-group">
+      <label>Description</label>
+      <textarea class="form-control">
+      </textarea>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Add recipe</button>
+  </form>
+{% endblock %}
