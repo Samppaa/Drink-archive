@@ -1,32 +1,33 @@
 -- Lisää CREATE TABLE lauseet tähän tiedostoon
 CREATE TABLE Users
 (
-id int PRIMARY KEY,
-name varchar(60) NOT NULL,
-password varchar(60) NOT NULL,
+id SERIAL PRIMARY KEY,
+name varchar(14) NOT NULL,
+password varchar(16) NOT NULL,
 type int NOT NULL
 );
 
 CREATE TABLE Drinks
 (
-id int PRIMARY KEY,
-name varchar(60) NOT NULL,
+id SERIAL PRIMARY KEY,
+name varchar(25) NOT NULL,
 descrition varchar(255),
 author int NOT NULL REFERENCES Users,
 time_added date NOT NULL,
-type varchar(60) NOT NULL
+type varchar(60) NOT NULL,
+waiting_acceptance int NOT NULL DEFAULT 1
 );
 
 CREATE TABLE Ingredients
 (
-id int PRIMARY KEY,
-name varchar(60) NOT NULL
+id SERIAL PRIMARY KEY,
+name varchar(30) NOT NULL
 );
 
 CREATE TABLE Tags
 (
-id int NOT NULL PRIMARY KEY,
-word varchar(60) NOT NULL
+id SERIAL PRIMARY KEY,
+word varchar(30) NOT NULL
 );
 
 CREATE TABLE Drink_Ingredients

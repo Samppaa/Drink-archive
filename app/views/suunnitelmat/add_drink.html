@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Add drink recipe(Tätä sivua tullaan käyttämään muokkaamiseen sekä lisäämiseen)</h1>
+  <h1>Add drink(Tätä sivua tullaan käyttämään muokkaamiseen sekä lisäämiseen, ajattelin laittaa kontrolleriin flagin joka kertoo onko kyseessä add vai modify)</h1>
 
   <form>
     <div class="form-group">
@@ -20,6 +20,17 @@
     </div>
     
     <div class="form-group">
+      <label>Tags</label>
+      <input type="text" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-success">New tag</button>
+    
+    <div>
+        <br>
+    </div>
+    
+    <div class="form-group">
       <label>Type</label>
       <input type="text" class="form-control">
     </div>
@@ -30,6 +41,6 @@
       </textarea>
     </div>
     
-    <button type="submit" class="btn btn-primary">Add recipe</button>
+    <button type="submit" class="btn btn-primary">Add drink</button>
   </form>
 {% endblock %}
