@@ -10,7 +10,7 @@ Yleisiä linkkejä:
 * [Käyttäjän kirjautuminen](http://sadlehto.users.cs.helsinki.fi/Drinkarchive/login)
 * [Drinkkien listaus ja etusivu](http://sadlehto.users.cs.helsinki.fi/Drinkarchive/)
 * [Drinkin muokkaus ja lisäys](http://sadlehto.users.cs.helsinki.fi/Drinkarchive/add_drink)
-* [Drinkin tietojen katsominen](http://sadlehto.users.cs.helsinki.fi/Drinkarchive/drink
+* [Drinkin tietojen katsominen](http://sadlehto.users.cs.helsinki.fi/Drinkarchive/drink)
 * [Käyttäjän tietojen katsominen](http://sadlehto.users.cs.helsinki.fi/Drinkarchive/user)
 
 ## Työn aihe
