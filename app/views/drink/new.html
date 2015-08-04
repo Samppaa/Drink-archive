@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Add drink(Tätä sivua tullaan käyttämään muokkaamiseen sekä lisäämiseen, ajattelin laittaa kontrolleriin flagin joka kertoo onko kyseessä add vai modify)</h1>
+
+  <form method="post" action="{{base_path}}/drink">
+    <div class="form-group">
+      <label>Drink name</label>
+      <input name="name" type="text" class="form-control">
+    </div>
+
+    <label>Ingredients</label>
+    <div id="ingredients">
+        <div class="input-group">
+          <span class="input-group-addon">Name</span>
+          <input type="text" name="ingredient[]" class="form-control" placeholder="Apple">
+          <span class="input-group-addon">Amount</span>
+          <input type="text" name="ingredientAmount[]" class="form-control" placeholder="1 slice">
+        </div>
+    </div>
+
+    <br>
+    <button type="button" class="btn btn-success" onclick="createNewFieldForIngredient()">New ingredient</button>
+    
+    <div>
+        <br>
+    </div>
+    
+    <div class="form-group" id="tags">
+      <label>Tags</label>
+      <input type="text" id="tag[]" class="form-control">
+    </div>
+
+    <button type="button" onclick="createNewFieldForTag()" class="btn btn-success">New tag</button>
+    
+    <div>
+        <br>
+    </div>
+    
+    <div class="form-group">
+      <label>Type</label>
+      <input name="type" type="text" class="form-control">
+    </div>
+    
+    <div class="form-group">
+      <label>Description</label>
+      <textarea name="description" class="form-control"></textarea>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Add drink</button>
+    <button type="button" class="btn btn-primary">Read drink info from file</button>
+  </form>
+  
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script>
+      function createNewFieldForIngredient() {
+          var divStart = "<br><div class=\"input-group\">";
+          var nameSpan = "<span class=\"input-group-addon\">Name</span>";
+          var textField = "<input name=\"ingredient[]\" type=\"text\" class=\"form-control\">";
+          var span = "<span class=\"input-group-addon\">Amount</span>";
+          var textField2 = "<input type=\"text\" name=\"ingredientAmount[]\" class=\"form-control\">";
+          var divEnd = "</div>";
+          $("#ingredients").append(divStart+nameSpan+textField+span+textField2+divEnd);
+      }
+      
+      function createNewFieldForTag() {
+          var textField = "<br><input type=\"text\" id=\"tag[]\" class=\"form-control\">";
+          $("#tags").append(textField);
+      }
+  </script>
+  
+{% endblock %}

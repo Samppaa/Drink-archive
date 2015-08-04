@@ -11,7 +11,7 @@ CREATE TABLE Drinks
 (
 id SERIAL PRIMARY KEY,
 name varchar(25) NOT NULL,
-descrition varchar(255),
+description varchar(255),
 author int NOT NULL REFERENCES Users,
 time_added date NOT NULL,
 type varchar(60) NOT NULL,

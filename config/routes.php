@@ -1,5 +1,8 @@
 <?php
 
+  $routes->post('/drink', function() {
+    DrinksController::store();
+  });
 
   $routes->get('/', function() {
     DrinksController::index();
@@ -19,6 +22,11 @@
   
   $routes->get('/login', function() {
       UsersController::login();
+  });
+  
+
+  $routes->get('/drink/new', function() {
+      DrinksController::add_drink();
   });
   
   $routes->get('/add_drink', function() {
