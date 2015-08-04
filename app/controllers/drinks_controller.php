@@ -21,11 +21,18 @@ require 'app/models/drink.php';
             'time_added' => date("Y-m-d"),
             'type' => $params['type'],
             'waiting_acceptance' => 1,
-            'ingredients' => $params['ingredient']
+            'ingredients' => $params['ingredient'],
+            'amounts' => $params['ingredientAmount'],
+            'tags' => $params['tag']
         ));
         
         $drink->save();
         Redirect::to('/drinks');
+    }
+    
+    public static function show($id) {
+        $drink = Drink::find($id);
+        View::make('drink/view.html', array('drink' => $drink));
     }
     
     public static function add_drink(){

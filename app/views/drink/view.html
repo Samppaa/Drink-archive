@@ -1,15 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Cocktail</h1>
+  <h1>{{ drink.name }}</h1>
   <p>
-    <button class="btn btn-danger">Poista</button> <a href="#" class="btn btn-default">Muokkaa</a>
+    <button class="btn btn-danger">Delete</button> <a href="#" class="btn btn-default">Edit</a>
   </p>
+  
+  <strong>Ingredients:</strong>
   <ul>
-    <li><strong>Ingredients:</strong> Cola, Citrus, Ice</li>
-    <li><strong>Added by:</strong> Samppaa</li>
-    <li><strong>Added:</strong> 27.7.2015</li>
+      {% for ingredient in drink.ingredients %}
+      <li>{{ingredient.name}}</li>
+      {% endfor %}
   </ul>
+  
+  <strong>Tags:</strong>
+  <ul>
+      {% for tag in drink.tags %}
+      <li>{{tag.word}}</li>
+      {% endfor %}
+  </ul>
+  
+  <strong>Added by:</strong><p>Samppaa</p>
+  <strong>Added:</strong><p>27.7.2015</p>
+  <strong>Description:</strong>
   <p>
-    Good tasting cocktail with cola and citrus juice.
+   {{ drink.description }}
   </p>
 {% endblock %}

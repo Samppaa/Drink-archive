@@ -1,5 +1,9 @@
 <?php
 
+  $routes->get('/drink/:id', function($id) {
+    DrinksController::show($id);
+  });
+
   $routes->post('/drink', function() {
     DrinksController::store();
   });

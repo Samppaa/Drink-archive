@@ -21,11 +21,11 @@
     <tbody>
       {% for drink in drinks %}
         <tr>
-          <td><a href="{{base_path}}/drink">{{drink.name}}</a></td>
+          <td><a href="{{base_path}}/drink/{{drink.id}}">{{drink.name}}</a></td>
           <td>{{drink.author.name}}</td>
           <td>{{drink.time_added}}</td>
           <td>{{drink.type}}</td>
-          <td><a class="btn btn-default btn-sm" href="{{base_path}}/add_drink">Muokkaa</a></td>
+          <td><a class="btn btn-default btn-sm" href="{{base_path}}/add_drink">Edit</a></td>
         </tr>
       {% endfor %}
     </tbody>
