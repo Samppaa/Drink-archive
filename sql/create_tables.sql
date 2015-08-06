@@ -24,12 +24,6 @@ id SERIAL PRIMARY KEY,
 name varchar(30) NOT NULL
 );
 
-CREATE TABLE Tags
-(
-id SERIAL PRIMARY KEY,
-word varchar(30) NOT NULL
-);
-
 CREATE TABLE Drink_Ingredients
 (
 ingredient_id int NOT NULL REFERENCES Ingredients,
@@ -38,9 +32,3 @@ amount varchar(10) NOT NULL,
 PRIMARY KEY (ingredient_id, drink_id, amount)
 );
 
-CREATE TABLE Drink_Tags
-(
-tag_id int NOT NULL REFERENCES Tags,
-drink_id int NOT NULL REFERENCES Drinks,
-PRIMARY KEY (tag_id, drink_id)
-);

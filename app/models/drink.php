@@ -1,6 +1,6 @@
 <?php
   class Drink extends BaseModel{
-      public $id, $name, $description, $author, $time_added, $type, $waiting_acceptance, $ingredients, $amounts, $tags;
+      public $id, $name, $description, $author, $time_added, $type, $waiting_acceptance, $ingredients, $amounts;
       
       public function __construct($attributes){
         parent::__construct($attributes);
@@ -16,8 +16,7 @@
                 'time_added' => $row['time_added'],
                 'type' => $row['type'],
                 'waiting_acceptance' => $row['waiting_acceptance'],
-                'ingredients' => Ingredient::findByDrinkId($row['id']),
-                'tags' => Tag::findByDrinkId($row['id'])));
+                'ingredients' => Ingredient::findByDrinkId($row['id'])));
           return $drink;
       }
       
@@ -36,7 +35,6 @@
       
       public static function find($id)
       {
-          // Aluksi haetaan juoma normaalisti
           $query = DB::connection()->prepare('SELECT * FROM Drinks WHERE id = :id LIMIT 1');
           $query->execute(array('id' => $id));
           $row = $query->fetch();
@@ -67,19 +65,6 @@
           }
       }
       
-      private function saveTags()
-      {
-          foreach ($this->tags as $tagName) {
-              $tag = new Tag(array(
-                  'word' => $tagName ));
-              $tag->save();
-              $tagConnection = new Tag_Drink_Connection(array(
-                  'tag_id' => $tag->id,
-                  'drink_id' => $this->id));
-              $tagConnection->save();
-          }
-      }
-      
       public function save() {
           // Author ID huom
           $query = DB::connection()->prepare('INSERT INTO Drinks (name, description, author, time_added, type, waiting_acceptance) VALUES (:name, :description, :author, :time_added, :type, :waiting_acceptance) RETURNING id');
@@ -88,6 +73,5 @@
           $this->id = $row['id'];
           
           $this->saveIngredients();
-          $this->saveTags();
       }
   }

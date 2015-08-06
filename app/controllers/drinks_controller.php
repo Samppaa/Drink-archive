@@ -22,8 +22,7 @@ require 'app/models/drink.php';
             'type' => $params['type'],
             'waiting_acceptance' => 1,
             'ingredients' => $params['ingredient'],
-            'amounts' => $params['ingredientAmount'],
-            'tags' => $params['tag']
+            'amounts' => $params['ingredientAmount']
         ));
         
         $drink->save();

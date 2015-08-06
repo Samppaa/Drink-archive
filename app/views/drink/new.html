@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Add drink(Tätä sivua tullaan käyttämään muokkaamiseen sekä lisäämiseen, ajattelin laittaa kontrolleriin flagin joka kertoo onko kyseessä add vai modify)</h1>
+  <h1>Add drink</h1>
 
   <form method="post" action="{{base_path}}/drink">
     <div class="form-group">
@@ -25,12 +25,6 @@
         <br>
     </div>
     
-    <div class="form-group" id="tags">
-      <label>Tags</label>
-      <input type="text" name="tag[]" class="form-control">
-    </div>
-
-    <button type="button" onclick="createNewFieldForTag()" class="btn btn-success">New tag</button>
     
     <div>
         <br>
@@ -61,11 +55,6 @@
           var textField2 = "<input type=\"text\" name=\"ingredientAmount[]\" class=\"form-control\">";
           var divEnd = "</div>";
           $("#ingredients").append(divStart+nameSpan+textField+span+textField2+divEnd);
-      }
-      
-      function createNewFieldForTag() {
-          var textField = "<br><input type=\"text\" name=\"tag[]\" class=\"form-control\">";
-          $("#tags").append(textField);
       }
   </script>
   
