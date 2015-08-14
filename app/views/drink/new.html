@@ -1,61 +1,109 @@
 {% extends "base.html" %}
 {% block content %}
+  {% if editing %}
+  <h1>Edit drink</h1>
+  {% else %}
   <h1>Add drink</h1>
+  {% endif %}
+  
+  {% if errors %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for error in errors %}
+          <li>{{error}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
 
+  {% if editing %}
+  <form method="post" action="{{base_path}}/drink/{{attributes.id}}/edit">
+  {% else %}
   <form method="post" action="{{base_path}}/drink">
+  {% endif %}
     <div class="form-group">
       <label>Drink name</label>
-      <input name="name" type="text" class="form-control">
+      <input name="name" type="text" class="form-control" value="{{attributes.name}}">
     </div>
 
     <label>Ingredients</label>
     <div id="ingredients">
-        <div class="input-group">
-          <span class="input-group-addon">Name</span>
-          <input type="text" name="ingredient[]" class="form-control" placeholder="Apple">
-          <span class="input-group-addon">Amount</span>
-          <input type="text" name="ingredientAmount[]" class="form-control" placeholder="1 slice">
-        </div>
+        <!-- Näin varmistetaan että ainakin 1 kenttä on näkyvissä aina -->
+        {% if ingredientsCount == 0 %}
+            <div class="input-group" id="0">
+              <span class="input-group-addon">Name</span>
+              <input type="text" name="ingredient[]" class="form-control" placeholder="Apple" value="{{attributes.ingredients[0].name}}">
+              <span class="input-group-addon">Amount</span>
+              <input type="text" name="ingredientAmount[]" class="form-control" placeholder="1 slice" value="{{attributes.ingredients[0].amount}}">
+              <span class="input-group-btn">
+                    <button class="btn btn-danger" onclick="removeIngredientField('0')" type="button">Delete</button>
+              </span>
+            </div>
+        <br id="0br">
+        {% else %}
+        {% for ingredient in attributes.ingredients %}
+            <div class="input-group" id="{{loop.index0}}">
+              <span class="input-group-addon">Name</span>
+              <input type="text" name="ingredient[]" class="form-control" placeholder="Apple" value="{{ingredient.name}}">
+              <span class="input-group-addon">Amount</span>
+              <input type="text" name="ingredientAmount[]" class="form-control" placeholder="1 slice" value="{{ingredient.amount}}">
+              <span class="input-group-btn">
+                    <button class="btn btn-danger" onclick="removeIngredientField({{loop.index0}})" type="button">Delete</button>
+              </span>
+            </div>
+        <br id="{{loop.index0}}br">
+        {% endfor %}
+        {% endif %}
     </div>
 
     <br>
     <button type="button" class="btn btn-success" onclick="createNewFieldForIngredient()">New ingredient</button>
     
-    <div>
-        <br>
-    </div>
-    
-    
-    <div>
-        <br>
-    </div>
+    <br>
+    <br>
     
     <div class="form-group">
       <label>Type</label>
-      <input name="type" type="text" class="form-control">
+      <input name="type" type="text" class="form-control" value="{{attributes.type}}">
     </div>
     
     <div class="form-group">
       <label>Description</label>
-      <textarea name="description" class="form-control"></textarea>
+      <textarea name="description" class="form-control">{{attributes.description}}</textarea>
     </div>
     
+    {% if editing %}
+    <button type="submit" class="btn btn-primary">Update drink</button>
+    {% else %}
     <button type="submit" class="btn btn-primary">Add drink</button>
-    <button type="button" class="btn btn-primary">Read drink info from file</button>
+    {% endif %}
   </form>
   
   
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script>
       function createNewFieldForIngredient() {
-          var divStart = "<br><div class=\"input-group\">";
+          var divStart = "<div class=\"input-group\" id="+window.ingredientCount.toString()+">";
           var nameSpan = "<span class=\"input-group-addon\">Name</span>";
-          var textField = "<input name=\"ingredient[]\" type=\"text\" class=\"form-control\">";
+          var textField = "<input name=\"ingredient[]\" type=\"text\" class=\"form-control\" placeholder=\"Apple\">";
           var span = "<span class=\"input-group-addon\">Amount</span>";
-          var textField2 = "<input type=\"text\" name=\"ingredientAmount[]\" class=\"form-control\">";
-          var divEnd = "</div>";
-          $("#ingredients").append(divStart+nameSpan+textField+span+textField2+divEnd);
+          var textField2 = "<input type=\"text\" name=\"ingredientAmount[]\" class=\"form-control\" placeholder=\"1 slice\">";
+          var span2 = "<span class=\"input-group-btn\"><button class=\"btn btn-danger\" onclick=\"removeIngredientField("+window.ingredientCount.toString()+")\" type=\"button\">Delete</button>";
+          var divEnd = "</div><br id="+window.ingredientCount.toString()+"br>";
+          $("#ingredients").append(divStart+nameSpan+textField+span+textField2+span2+divEnd);
+          window.ingredientCount++;
       }
+      
+      function removeIngredientField(fieldId) {
+          document.getElementById(fieldId).remove();
+          document.getElementById(fieldId+'br').remove();
+          window.ingredientCount--;
+      }
+      
+      document.addEventListener('DOMContentLoaded', function() {
+          window.ingredientCount = document.getElementsByClassName("input-group").length;
+      }, false);
+      
   </script>
   
 {% endblock %}

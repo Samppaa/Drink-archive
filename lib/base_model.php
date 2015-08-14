@@ -14,6 +14,20 @@
         }
       }
     }
+    
+    protected function validate_string_length_less_than($string, $length) {
+          if(strlen($string) < $length) {
+              return false;
+          }
+          return true;
+      }
+      
+    protected function validate_string_length_greater_than($string, $length) {
+          if(strlen($string) > $length) {
+              return false;
+          }
+          return true;
+    }
 
     public function errors(){
       // Lisätään $errors muuttujaan kaikki virheilmoitukset taulukkona
@@ -21,6 +35,7 @@
 
       foreach($this->validators as $validator){
         // Kutsu validointimetodia tässä ja lisää sen palauttamat virheet errors-taulukkoon
+          $errors = array_merge($errors, $this->{$validator}());
       }
 
       return $errors;

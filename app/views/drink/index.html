@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>All drinks <a href="#" class="btn btn-success">Add drink</a></h1>
+  {% if message %}
+    <div class="alert alert-success">
+        <p>{{message}}</p>
+    </div>
+  {% endif %}
+  
+  <h1>All drinks <a href="{{base_path}}/drink/new" class="btn btn-success">Add drink</a></h1>
 
   <div class="form-group">
       <label>Search drinks</label>
@@ -25,7 +31,14 @@
           <td>{{drink.author.name}}</td>
           <td>{{drink.time_added}}</td>
           <td>{{drink.type}}</td>
-          <td><a class="btn btn-default btn-sm" href="{{base_path}}/add_drink">Edit</a></td>
+          <td>
+              <form method="post" action="{{base_path}}/drink/{{drink.id}}/destroy">
+              <div class="btn-group">
+                <a class="btn btn-default btn-sm" href="{{base_path}}/drink/{{drink.id}}/edit">Edit</a>
+                <button class="btn btn-danger btn-sm">Delete</button>
+              </div>
+              </form>
+          </td>
         </tr>
       {% endfor %}
     </tbody>

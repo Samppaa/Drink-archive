@@ -1,7 +1,28 @@
 <?php
 
-  $routes->get('/drink/:id', function($id) {
-    DrinksController::show($id);
+
+  $routes->get('/drink/:id/edit', function($id){
+    DrinksController::edit($id);
+  });
+  
+  $routes->get('/login', function(){
+      UsersController::login();
+  });
+  
+  $routes->get('/logout', function(){
+      UsersController::logout();
+  });
+  
+  $routes->post('/login', function(){
+      UsersController::handle_login();
+  });
+  
+  $routes->post('/drink/:id/edit', function($id){
+   DrinksController::update($id);
+  });
+  
+  $routes->post('/drink/:id/destroy', function($id){
+  DrinksController::destroy($id);
   });
 
   $routes->post('/drink', function() {
@@ -24,13 +45,17 @@
       UsersController::index();
   });
   
-  $routes->get('/login', function() {
-      UsersController::login();
-  });
-  
 
   $routes->get('/drink/new', function() {
       DrinksController::add_drink();
+  });
+  
+  $routes->get('/drink/:id', function($id) {
+    DrinksController::show($id);
+  });
+  
+  $routes->get('/user/:id', function($id) {
+    UsersController::show($id);
   });
   
   $routes->get('/add_drink', function() {
@@ -39,6 +64,10 @@
 
   $routes->get('/register', function() {
       UsersController::register();
+  });
+  
+  $routes->post('/register', function() {
+      UsersController::create_user();
   });
   
   $routes->get('/user', function() {

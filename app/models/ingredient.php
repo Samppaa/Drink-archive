@@ -5,6 +5,35 @@
       public $id, $name, $amount;
       public function __construct($attributes) {
           parent::__construct($attributes);
+          $this->validators = array('validate_name', 'validate_amount');
+      }
+      
+      public function validate_name() {
+          $errors = array();
+          
+          if(!$this->validate_string_length_less_than($this->name, 3)) {
+              $errors[] = 'Ainesosan nimen tulee olla vähintään 3 merkkiä!';
+          }
+          
+          if(!$this->validate_string_length_greater_than($this->name, 30)) {
+              $errors[] = 'Ainesosan nimen tulee olla enintään 30 merkkiä!';
+          }
+          
+          return $errors;
+      }
+      
+      public function validate_amount() {
+          $errors = array();
+          
+          if(!$this->validate_string_length_less_than($this->amount, 1)) {
+              $errors[] = 'Ainesosan määrän tulee olla vähintään 1 merkkiä!';
+          }
+          
+          if(!$this->validate_string_length_greater_than($this->amount, 10)) {
+              $errors[] = 'Ainesosan määrän tulee olla enintään 30 merkkiä!';
+          }
+          
+          return $errors;
       }
       
       public static function all() {
@@ -15,21 +44,36 @@
           
           foreach($rows as $row)
           {
-              $ingredients[] = new Ingredient(array(
-                  'id' => $row['id'],
-                  'name' => $row['name'] ));
+              $ingredients[] = $this->ingredientFromRow($row);
           }
           
           return $ingredients;
       }
       
+      private function ingredientFromRow($row) {
+          $ingredient = new Ingredient(array(
+                  'id' => $row['id'],
+                  'name' => $row['name'] ));
+          return $ingredient;
+      }
+      
+      
       public function save()
       {
-          // Aluksi tulee tarkistaa onko jo olemassa
-          $query = DB::connection()->prepare('INSERT INTO Ingredients (name) VALUES (:name) RETURNING id');
-          $query->execute(array('name' => $this->name));
-          $row = $query->fetch();
-          $this->id = $row['id'];
+          $ingredientT = self::findByName($this->name);
+          
+          // Tarkastetaan onko saman niminen jo olemassa, jos on niin otetaan se eikä luoda uutta
+          if(!$ingredientT)
+          {
+            $query = DB::connection()->prepare('INSERT INTO Ingredients (name) VALUES (:name) RETURNING id');
+            $query->execute(array('name' => $this->name));
+            $row = $query->fetch();
+            $this->id = $row['id'];
+          }
+          else {
+            $this->id = $ingredientT->id;
+            $this->name = $ingredientT->name;
+          }
       }
       
       public static function findById($id)
@@ -38,11 +82,19 @@
           $query->execute(array('id' => $id));
           $row = $query->fetch();
           if($row) {
-              $ingredient = new Ingredient(array(
-                  'id' => $row['id'],
-                  'name' => $row['name'] ));
-              return $ingredient;
+              return self::ingredientFromRow($row);
           }
+          return null;
+      }
+      
+      public static function findByName($name) {
+          $query = DB::connection()->prepare('SELECT * FROM Ingredients WHERE name = :name LIMIT 1');
+          $query->execute(array('name' => $name));
+          $row = $query->fetch();
+          if($row) {
+              return self::ingredientFromRow($row);
+          }
+          return null;
       }
       
       public static function findByDrinkId($id)

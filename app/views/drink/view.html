@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
   <h1>{{ drink.name }}</h1>
-  <p>
-    <button class="btn btn-danger">Delete</button> <a href="#" class="btn btn-default">Edit</a>
-  </p>
+  <form method="post" action="{{base_path}}/drink/{{drink.id}}/destroy">
+    <div class="btn-group">
+        <button class="btn btn-danger">Delete</button> 
+        <a href="{{base_path}}/drink/{{drink.id}}/edit" class="btn btn-default">Edit</a>
+    </div>
+  </form>
   
   <strong>Ingredients:</strong>
   <ul>

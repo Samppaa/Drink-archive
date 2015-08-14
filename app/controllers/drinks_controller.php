@@ -8,25 +8,83 @@ require 'app/models/drink.php';
         View::make('drink/index.html', array('drinks' => $drinks));
     }
     
-    public static function store()
+    public static function edit($id) {
+        if(self::check_logged_in(true))
+        {
+            $drink = Drink::find($id);
+            View::make('drink/new.html', array('editing' => true, 'attributes' => $drink, 'ingredientsCount' => count($drink->ingredients)));
+        }
+    }
+    
+    private static function createDrinkFromParams($params)
     {
-        $params = $_POST;
+        $ingredients = array();
+        for($i = 0; $i < count($params['ingredient']); $i++)
+        {
+            $ingredientName = $params['ingredient'][$i];
+            $ingredientAmount = $params['ingredientAmount'][$i];
+            $ingredient = new Ingredient(array(
+                  'name' =>$ingredientName,
+                  'amount' =>$ingredientAmount));
+            $ingredients[] = $ingredient;
+        }
         
-        // Author väliaikainen, jatkossa otetaan aktiivisesta käyttäjästä
-        
-        $drink = new Drink(array(
+        $attributes = array(
             'name' => $params['name'],
             'description' => $params['description'],
-            'author' => User::find(0),
+            'author' => self::get_user_logged_in(),
             'time_added' => date("Y-m-d"),
             'type' => $params['type'],
             'waiting_acceptance' => 1,
-            'ingredients' => $params['ingredient'],
+            'ingredients' => $ingredients,
             'amounts' => $params['ingredientAmount']
-        ));
+        );
         
-        $drink->save();
-        Redirect::to('/drinks');
+        $drink = new Drink($attributes);
+        return $drink;
+    }
+    
+    public static function update($id) {
+        if(self::check_logged_in(true)) {
+            $params = $_POST;
+            $drink = self::createDrinkFromParams($params);
+            $drink->id = $id;
+            if(count($drink->errors()) == 0) {
+                $drink->update();
+                Redirect::to('/drink/' . $drink->id, array('message' => "Juoman muokkaus onnistui!"));
+            }
+            else
+            {
+                View::make('drink/new.html', array('errors' => $drink->errors(), 'attributes' => $drink, 'ingredientsCount' => count($drink->ingredients), 'editing' => true));
+            }
+        }
+    }
+    
+    public static function destroy($id) {
+        if(self::check_logged_in(true))
+        {
+            $drink = new Drink(array('id' => $id));
+            $drink->destroy($id);
+            Redirect::to('/drinks', array('message' => 'Juoma on poistettu onnistuneesti!'));
+        }
+    }
+    
+    
+    public static function store()
+    {
+        if(self::check_logged_in(true)) {
+            $params = $_POST;
+            $drink = self::createDrinkFromParams($params);
+
+            if(count($drink->errors()) == 0) {
+                $drink->save();
+                Redirect::to('/drinks');
+            }
+            else
+            {
+                View::make('drink/new.html', array('errors' => $drink->errors(), 'attributes' => $drink, 'ingredientsCount' => count($drink->ingredients)));
+            }
+        }
     }
     
     public static function show($id) {
@@ -35,8 +93,10 @@ require 'app/models/drink.php';
     }
     
     public static function add_drink(){
-        //View::make('suunnitelmat/add_drink.html'); 
-        View::make('drink/new.html');
+        if(self::check_logged_in(true))
+        {
+            View::make('drink/new.html', array('editing' => false));
+        }
     }
     
     public static function view_drink(){

@@ -3,13 +3,29 @@
   class BaseController{
 
     public static function get_user_logged_in(){
-      // Toteuta kirjautuneen käyttäjän haku tähän
-      return null;
-    }
+        
+        if(isset($_SESSION['user'])){
+            $user_id = $_SESSION['user'];
+            $user = User::find($user_id);
 
-    public static function check_logged_in(){
-      // Toteuta kirjautumisen tarkistus tähän.
-      // Jos käyttäjä ei ole kirjautunut sisään, ohjaa hänet toiselle sivulle (esim. kirjautumissivulle).
+            return $user;
+        }
+
+        return null;
+    }
+    
+
+    public static function check_logged_in($redirect){
+      if(isset($_SESSION['user'])) {
+          return true;
+      }
+      else
+      {
+        if($redirect) {
+            Redirect::to("/login", array('message' => 'You need to be logged in to add a drink!'));
+        }
+        return false;
+      }
     }
 
   }
