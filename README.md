@@ -16,3 +16,7 @@ Linkkejä sovelluksen suunnittelu sivuihin, huom ei ole vielä mitää toiminnal
 ## Työn aihe
 
 [Drinkkiarkisto](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Drinkkiarkisto.html) 
+
+## Testi tunnukset
+Nimi: Test123
+Salasana: Test123
