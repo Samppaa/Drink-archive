@@ -1,6 +1,6 @@
 # Tietokantasovelluksen esittelysivu
 
-Linkkejä sovelluksen suunnittelu sivuihin, huom ei ole vielä mitää toiminnallisuutta.
+Linkkejä sovelluksen sivuihin
 
 * [Linkki sovellukseeni](http://sadlehto.users.cs.helsinki.fi/Drinkarchive/)
 * [Linkki dokumentaatiooni](https://github.com/Samppaa/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
