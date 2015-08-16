@@ -49,6 +49,7 @@ require 'app/models/drink.php';
             $params = $_POST;
             $drink = self::createDrinkFromParams($params);
             $drink->id = $id;
+            $drink->setEditing(true);
             if(count($drink->errors()) == 0) {
                 $drink->update();
                 Redirect::to('/drink/' . $drink->id, array('message' => "Juoman muokkaus onnistui!"));

@@ -1,10 +1,15 @@
 <?php
   class Drink extends BaseModel{
-      public $id, $name, $description, $author, $time_added, $type, $waiting_acceptance, $ingredients, $amounts;
+      public $id, $name, $description, $author, $time_added, $type, $waiting_acceptance, $ingredients, $amounts, $isEditing;
       
       public function __construct($attributes){
         parent::__construct($attributes);
         $this->validators = array('validate_name', 'validate_description', 'validate_type', 'validate_ingredients');
+        $this->isEditing = false;
+      }
+      
+      public function setEditing($editing) {
+          $this->isEditing = $editing;
       }
       
       public function validate_ingredients() {
@@ -29,6 +34,10 @@
           
           if(!$this->validate_string_length_greater_than($this->name, 25)) {
               $errors[] = 'Drink name can\'t be longer than 25 characters';
+          }
+          
+          if(self::findByName($this->name) && !$this->isEditing) {
+              $errors[] = 'Drink with this name already exists!';
           }
           
           return $errors;
@@ -99,6 +108,20 @@
               $drink = Drink::newDrinkFromRow($row);
               return $drink;
           }
+      }
+      
+      public static function findByName($name)
+      {
+          $query = DB::connection()->prepare('SELECT * FROM Drinks WHERE name = :name LIMIT 1');
+          $query->execute(array('name' => $name));
+          $row = $query->fetch();
+          
+          if($row) {
+              $drink = Drink::newDrinkFromRow($row);
+              return $drink;
+          }
+          
+          return null;
       }
       
       public function update() {
