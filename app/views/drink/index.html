@@ -20,26 +20,40 @@
         <th>Author</th>
         <th>Date</th>
         <th>Type</th>
+        {% if is_admin == true %}
         <th></th>
+        <th></th>
+        {% endif %}
       </tr>
     </thead>
 
     <tbody>
       {% for drink in drinks %}
+      {% if drink.waiting_acceptance == 0 or is_admin %}
         <tr>
           <td><a href="{{base_path}}/drink/{{drink.id}}">{{drink.name}}</a></td>
           <td>{{drink.author.name}}</td>
           <td>{{drink.time_added}}</td>
           <td>{{drink.type}}</td>
+          {% if is_admin == true %}
           <td>
               <form method="post" action="{{base_path}}/drink/{{drink.id}}/destroy">
               <div class="btn-group">
-                <a class="btn btn-default btn-sm" href="{{base_path}}/drink/{{drink.id}}/edit">Edit</a>
-                <button class="btn btn-danger btn-sm">Delete</button>
+                    <a class="btn btn-default btn-sm" href="{{base_path}}/drink/{{drink.id}}/edit">Edit</a>
+                    <button class="btn btn-danger btn-sm">Delete</button>
               </div>
               </form>
           </td>
+          <td>
+              <form method="post" action="{{base_path}}/drink/{{drink.id}}/accept">
+              {% if drink.waiting_acceptance == 1 %}
+                <button class="btn btn-success btn-sm">Accept drink</button>
+              {% endif %}
+              </form>
+          </td>
+          {% endif %}
         </tr>
+      {% endif %}
       {% endfor %}
     </tbody>
   </table>

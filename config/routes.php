@@ -70,14 +70,20 @@
       UsersController::create_user();
   });
   
-  $routes->get('/user', function() {
-      UsersController::viewUser();
-  }); 
+
   
-   $routes->get('/drink', function() {
-       DrinksController::view_drink();
+  $routes->get('/user/:id/edit', function($id) {
+       UsersController::editUser($id);
   });
   
-   $routes->get('/edit_user', function() {
-       UsersController::editUser();
+  $routes->post('/user/:id/edit', function($id) {
+       UsersController::update($id);
+  });
+  
+  $routes->post('/user/:id/destroy', function($id) {
+       UsersController::destroy($id);
+  });
+  
+   $routes->post('/drink/:id/accept', function($id) {
+       DrinksController::acceptDrink($id);
   });

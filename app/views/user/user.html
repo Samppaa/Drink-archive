@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>User info:</h1>
+<form method="post" action="{{base_path}}/user/{{user.id}}/destroy">
+  <h1>User info</h1>
   <p>
-    <button class="btn btn-danger">Delete</button> <a href="#" class="btn btn-default">Edit</a>
+   <button class="btn btn-danger">Delete</button> <a href="{{base_path}}/user/{{user.id}}/edit" class="btn btn-default">Edit</a>
   </p>
   <ul>
     <li><strong>Name:</strong> {{ user.name }}</li>
     <li><strong>Permissions:</strong> {% if user.type == 0 %} Normal user {% elseif user.type == 1 %} Right to add drinks {% else %} Admin {% endif %}</li>
   </ul>
+</form>
 {% endblock %}

@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Tämä luokka on malli juoman ainesosalle, ja sisältää kaikki ainesosan käsittelyyn liittyvät metodit kuten poiston ja lisäyksen.
+ * @author Samuli Lehtonen
+ */
   class Ingredient extends BaseModel {
       // Amount voi olla tyhjä, sillä sitä tarvitaan vain kun haetaan drinkkeihin liittyviä ainesosia
       public $id, $name, $amount;
@@ -8,6 +11,9 @@
           $this->validators = array('validate_name', 'validate_amount');
       }
       
+      /**
+       * Validaattori metodit tallennusta varten
+       */
       public function validate_name() {
           $errors = array();
           
@@ -36,6 +42,9 @@
           return $errors;
       }
       
+      /**
+       * Hakee kaikki ainesosat tietokannasta
+       */
       public static function all() {
           $query = DB::connection()->prepare('SELECT * FROM Ingredients');
           $query->execute();
@@ -50,6 +59,11 @@
           return $ingredients;
       }
       
+      /**
+       * Luo ainesosa olion tietokannasta haetusta rivistä
+       * @param type $row
+       * @return \Ingredient
+       */
       private function ingredientFromRow($row) {
           $ingredient = new Ingredient(array(
                   'id' => $row['id'],
@@ -57,7 +71,9 @@
           return $ingredient;
       }
       
-      
+      /**
+       * Tallentaa ainesosa olion tietokantaan
+       */
       public function save()
       {
           $ingredientT = self::findByName($this->name);
@@ -76,6 +92,11 @@
           }
       }
       
+      /**
+       * Hakee tietokannsta ainesosan id:n perusteella
+       * @param $id
+       * @return ingredient
+       */
       public static function findById($id)
       {
           $query = DB::connection()->prepare('SELECT * FROM Ingredients WHERE id = :id LIMIT 1');
@@ -87,6 +108,11 @@
           return null;
       }
       
+      /**
+       * Hakee tietokannasta ainesosan nimen perusteella
+       * @param $name
+       * @return ingredient
+       */
       public static function findByName($name) {
           $query = DB::connection()->prepare('SELECT * FROM Ingredients WHERE name = :name LIMIT 1');
           $query->execute(array('name' => $name));
@@ -97,6 +123,11 @@
           return null;
       }
       
+      /**
+       * Hakee tietokannasta ainesosat juoman id:n perusteella
+       * @param $id
+       * @return ingredients
+       */
       public static function findByDrinkId($id)
       {
           $query = DB::connection()->prepare('SELECT * FROM Drink_Ingredients WHERE drink_id = :id');

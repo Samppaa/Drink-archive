@@ -1,4 +1,9 @@
+
 <?php
+/**
+ * Tämä luokka on malli juomalle, ja sisältää kaikki juoman käsittelyyn liittyvät metodit kuten poiston, muokkauksen ja lisäyksen.
+ * @author Samuli Lehtonen
+ */
   class Drink extends BaseModel{
       public $id, $name, $description, $author, $time_added, $type, $waiting_acceptance, $ingredients, $amounts, $isEditing;
       
@@ -8,10 +13,18 @@
         $this->isEditing = false;
       }
       
+      /**
+       * Asettaa muokkaustilan päälle. Tätä käytetään validoinnista, jotta saman niminen juoma voidaan päivittää kantaan
+       * Tämä tulee tehdä aina ennen muokkausta
+       * @param $editing
+       */
       public function setEditing($editing) {
           $this->isEditing = $editing;
       }
       
+      /**
+       * Validaattori metodit tallennusta varten
+       */
       public function validate_ingredients() {
           $errors = array();
           foreach ($this->ingredients as $ingredient)
@@ -60,6 +73,20 @@
           return $errors;
       }
       
+      /**
+       * Hyväksyy juoman niin että kaikki näkevät sen
+       */
+      public function acceptDrink() {
+          $this->waiting_acceptance = 0;
+          $query = DB::connection()->prepare('UPDATE Drinks SET waiting_acceptance=:waiting_acceptance WHERE id=:id');
+          $query->execute(array('waiting_acceptance' => $this->waiting_acceptance, 'id' => $this->id));
+      }
+      
+      /**
+       * Luo juoma olion tietokannasta haetun rivin perusteella
+       * @param $row
+       * @return Drink
+       */
       private static function newDrinkFromRow($row)
       {
           $drink = new Drink(array(
@@ -74,17 +101,27 @@
           return $drink;
       }
       
+      /**
+       * Tuhoaa juoman yhteydet ainesosiin, itse ainesosaa ei varsinaisesti koskaan tuhota, sillä jokin muu juoma saattaa käyttää samaa.
+       */
       private function destroyIngredients() {
           $query = DB::connection()->prepare('DELETE FROM Drink_Ingredients WHERE drink_id=:drink_id');
           $query->execute(array('drink_id' => $this->id));
       }
       
-      public function destroy($id) {
+      /**
+       * Tuhoaa juoman tietokannassa
+       */
+      public function destroy() {
           $this->destroyIngredients();
           $query = DB::connection()->prepare('DELETE FROM Drinks WHERE id=:id');
           $query->execute(array('id' => $this->id));
       }
       
+      /**
+       * Hakee kaikki juomat tietokannasta
+       * @return Drinks
+       */
       public static function all() {
           $query = DB::connection()->prepare('SELECT * FROM Drinks');
           $query->execute();
@@ -98,6 +135,11 @@
          return $drinks; 
       }
       
+      /**
+       * Hakee juoman id:n perusteella
+       * @param $id
+       * @return Drink
+       */
       public static function find($id)
       {
           $query = DB::connection()->prepare('SELECT * FROM Drinks WHERE id = :id LIMIT 1');
@@ -110,6 +152,11 @@
           }
       }
       
+      /**
+       * Hakee juoman nimen perusteella
+       * @param $name
+       * @return Drink
+       */
       public static function findByName($name)
       {
           $query = DB::connection()->prepare('SELECT * FROM Drinks WHERE name = :name LIMIT 1');
@@ -124,18 +171,27 @@
           return null;
       }
       
+      /*
+       * Päivittää juoman tietokantaan
+       */
       public function update() {
           $query = DB::connection()->prepare('UPDATE Drinks SET name=:name, description=:description, author=:author, time_added=:time_added, type=:type, waiting_acceptance=:waiting_acceptance WHERE id=:id');
           $query->execute(array('name' => $this->name, 'description' => $this->description, 'author' => $this->author->id, 'time_added' => $this->time_added, 'type' => $this->type, 'waiting_acceptance' =>$this->waiting_acceptance, 'id' => $this->id));
           $this->updateIngredients();
       }
       
+      /*
+       * Päivittää juoman ainesosat tietokantaa. Käytännössä ne poistetaan ja lisätään uudelleen.
+       */
       private function updateIngredients()
       {
           $this->destroyIngredients();
           $this->saveIngredients();
       }
       
+      /*
+       * Tallentaa juoman ainesosat tietokantaan ja luo yhteydet juoman ja niiden välille.
+       */
       private function saveIngredients()
       {
           for($i = 0; $i < count($this->ingredients); $i++)
@@ -153,13 +209,14 @@
           }
       }
       
+      /*
+       * Tallentaa juoman tietokantaan
+       */
       public function save() {
-          // Author ID huom
           $query = DB::connection()->prepare('INSERT INTO Drinks (name, description, author, time_added, type, waiting_acceptance) VALUES (:name, :description, :author, :time_added, :type, :waiting_acceptance) RETURNING id');
           $query->execute(array('name' => $this->name, 'description' => $this->description, 'author' => $this->author->id, 'time_added' => $this->time_added, 'type' => $this->type, 'waiting_acceptance' =>$this->waiting_acceptance));
           $row = $query->fetch();
           $this->id = $row['id'];
-          
           $this->saveIngredients();
       }
   }
