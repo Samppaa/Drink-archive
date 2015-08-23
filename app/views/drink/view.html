@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
   <h1>{{ drink.name }}</h1>
+  {% if is_admin %}
   <form method="post" action="{{base_path}}/drink/{{drink.id}}/destroy">
     <div class="btn-group">
         <button class="btn btn-danger">Delete</button> 
         <a href="{{base_path}}/drink/{{drink.id}}/edit" class="btn btn-default">Edit</a>
     </div>
   </form>
+  {% endif %}
   
   <strong>Ingredients:</strong>
   <ul>

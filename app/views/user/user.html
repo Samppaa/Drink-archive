@@ -3,7 +3,12 @@
 <form method="post" action="{{base_path}}/user/{{user.id}}/destroy">
   <h1>User info</h1>
   <p>
-   <button class="btn btn-danger">Delete</button> <a href="{{base_path}}/user/{{user.id}}/edit" class="btn btn-default">Edit</a>
+    {% if is_admin and current_user.id != user.id %}
+    <button class="btn btn-danger">Delete</button>
+    {% endif %}
+    {% if is_admin %}
+    <a href="{{base_path}}/user/{{user.id}}/edit" class="btn btn-default">Edit</a>
+    {% endif %}
   </p>
   <ul>
     <li><strong>Name:</strong> {{ user.name }}</li>
