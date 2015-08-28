@@ -1,5 +1,4 @@
 <?php
-require 'app/models/drink.php';
 /**
  * Tämä luokka vastaa juomiin liittyvistä toimenpiteistä kuten lisäämisestä, poistamisesta ja muokkaamisesta. Luokka kutsuu juoma mallin metodeja.
  * @author Samuli Lehtonen
@@ -27,11 +26,11 @@ require 'app/models/drink.php';
     }
     
     /**
-     * Luo juoma olion annetuista parametreista
+     * Luo ingredient arrayn annetuista parametreista
      * @param $params
-     * @return Drink
+     * @return Ingredients
      */
-    private static function createDrinkFromParams($params)
+    private static function createIngredientsFromParams($params)
     {
         $ingredients = array();
         for($i = 0; $i < count($params['ingredient']); $i++)
@@ -43,6 +42,17 @@ require 'app/models/drink.php';
                   'amount' =>$ingredientAmount));
             $ingredients[] = $ingredient;
         }
+        return $ingredients;
+    }
+    
+    /**
+     * Luo juoma olion annetuista parametreista
+     * @param $params
+     * @return Drink
+     */
+    private static function createDrinkFromParams($params)
+    {
+        $ingredients = self::createIngredientsFromParams($params);
         
         $attributes = array(
             'name' => $params['name'],

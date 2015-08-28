@@ -82,6 +82,7 @@
   
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script>
+      // Luo uuden kentän ainesosielle
       function createNewFieldForIngredient() {
           var divStart = "<div class=\"input-group\" id="+window.ingredientCount.toString()+">";
           var nameSpan = "<span class=\"input-group-addon\">Name</span>";
@@ -94,12 +95,14 @@
           window.ingredientCount++;
       }
       
+      // Poistaa ainesosakentän tietyllä id:llä
       function removeIngredientField(fieldId) {
           document.getElementById(fieldId).remove();
           document.getElementById(fieldId+'br').remove();
           window.ingredientCount--;
       }
       
+      // Lisätään kuuntelija tapahtumalle
       document.addEventListener('DOMContentLoaded', function() {
           window.ingredientCount = document.getElementsByClassName("input-group").length;
       }, false);

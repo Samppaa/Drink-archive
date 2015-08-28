@@ -10,12 +10,27 @@
   </form>
   {% endif %}
   
-  <strong>Ingredients:</strong>
-  <ul>
-      {% for ingredient in drink.ingredients %}
-      <li>{{ingredient.name}}</li>
-      {% endfor %}
-  </ul>
+  <br>
+  <strong>Ingredients</strong>
+  <br>
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+
+    <tbody>
+        {% for ingredient in drink.ingredients %}
+        <tr>
+            <td>{{ingredient.name}}</td>
+            <td>{{ingredient.amount}}</td
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+
   
   <strong>Added by:</strong><p>Samppaa</p>
   <strong>Added:</strong><p>27.7.2015</p>
