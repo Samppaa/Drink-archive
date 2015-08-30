@@ -3,7 +3,7 @@
 <form method="post" action="{{base_path}}/user/{{user.id}}/destroy">
   <h1>User info</h1>
   <p>
-    {% if is_admin and current_user.id != user.id %}
+    {% if is_admin and (user_logged_in.id != user.id) %}
     <button class="btn btn-danger">Delete</button>
     {% endif %}
     {% if is_admin %}

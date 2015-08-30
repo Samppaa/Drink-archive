@@ -36,7 +36,7 @@
           }
           
           if(!$this->validate_string_length_greater_than($this->amount, 10)) {
-              $errors[] = 'Ainesosan määrän tulee olla enintään 30 merkkiä!';
+              $errors[] = 'Ainesosan määrän tulee olla enintään 10 merkkiä!';
           }
           
           return $errors;
