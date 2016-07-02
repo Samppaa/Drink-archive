@@ -14,9 +14,8 @@ Links to different pages of application:
 
 ## Test account details
 * Name: Test123
-* Passweord: Test123
+* Password: Test123
 
---------------------------
 # Same details in Finnish
 
 # Tietokantasovelluksen esittelysivu
